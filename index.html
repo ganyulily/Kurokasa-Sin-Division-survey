@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KUROKASA | Seven Sins Survey</title>
+<style>
+:root{--bg:#090a0d;--panel:#111319;--panel2:#171a22;--line:#303541;--text:#f0f0f3;--muted:#a6a9b4;--silver:#c8ccd6;--accent:#8c96aa}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#20232c 0,#0c0d12 42%,#07080a 100%);color:var(--text);font-family:Georgia,'Times New Roman',serif;min-height:100vh}
+.wrap{width:min(850px,92%);margin:0 auto;padding:42px 0 64px}.sigil{font-size:12px;letter-spacing:.42em;color:var(--silver);text-align:center;text-transform:uppercase}.umbrella{text-align:center;font-size:35px;color:#d6d9e1;margin:18px 0 8px}
+h1{text-align:center;font-size:clamp(32px,6vw,54px);font-weight:normal;letter-spacing:.08em;margin:8px 0 12px}h1 span{display:block;font-size:13px;letter-spacing:.34em;color:var(--silver);margin-top:12px}
+.intro{max-width:600px;text-align:center;color:var(--muted);line-height:1.7;margin:22px auto 28px;font-family:Arial,sans-serif;font-size:14px}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:28px 0}
+button{font:inherit;cursor:pointer;border:1px solid #747d90;background:#d9dce4;color:#101116;padding:13px 22px;letter-spacing:.08em;transition:.2s}button:hover{background:#fff}button.secondary{background:transparent;color:var(--text);border-color:var(--line)}button.secondary:hover{background:var(--panel2)}
+.center{text-align:center}.small{font:12px Arial,sans-serif;color:var(--muted);line-height:1.6}.hidden{display:none!important}
+.namebox{display:block;width:min(420px,100%);margin:0 auto 16px;background:#0c0e13;border:1px solid var(--line);padding:13px;color:var(--text);font:14px Arial,sans-serif}
+.progressrow{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font:12px Arial,sans-serif;margin-bottom:10px}.bar{height:4px;background:#272b34;margin-bottom:24px}.barfill{height:100%;width:0;background:#c9ceda;transition:width .2s}
+.question{padding:22px 20px;margin:14px 0;background:rgba(17,19,25,.88);border:1px solid var(--line);border-radius:3px}.qtop{font:11px Arial,sans-serif;letter-spacing:.16em;color:#9da6b9;text-transform:uppercase;margin-bottom:12px}.qtext{font-size:19px;line-height:1.45;margin-bottom:18px}
+.options{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.opt{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 5px;border:1px solid #343945;background:#0d0f14;cursor:pointer;font:12px Arial,sans-serif;color:var(--muted);text-align:center;min-height:70px}.opt input{accent-color:#d8dce5;width:17px;height:17px}.opt:has(input:checked){border-color:#c7ccd8;background:#252a35;color:#fff}
+.labels{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;font:10px Arial,sans-serif;color:#858b99;text-align:center;margin:0 0 12px}
+.actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:24px;flex-wrap:wrap}
+.resultcard{background:linear-gradient(145deg,#171a22,#0e1015);border:1px solid #505766;padding:clamp(22px,5vw,40px);margin-top:24px}
+.kicker{font:11px Arial,sans-serif;letter-spacing:.24em;color:#b7bdcc;text-transform:uppercase}.winner{font-size:clamp(34px,7vw,52px);margin:10px 0}.desc{font:14px/1.7 Arial,sans-serif;color:#c0c3cc}
+.score{margin:22px 0}.scorehead{display:flex;justify-content:space-between;gap:12px;font:13px Arial,sans-serif;margin-bottom:7px}.track{height:6px;background:#282c35}.fill{height:100%;background:#bbc3d3}
+.rank{border-top:1px solid var(--line);padding:14px 0}.rank strong{font-weight:normal;font-size:18px}.rank p{font:13px/1.6 Arial,sans-serif;color:var(--muted);margin:6px 0 0}
+footer{text-align:center;margin-top:38px;color:#6f7481;font:10px Arial,sans-serif;letter-spacing:.12em}
+@media(max-width:540px){.wrap{padding-top:28px}.question{padding:17px 12px}.qtext{font-size:17px}.options{gap:4px}.opt{font-size:10px;padding:10px 2px;min-height:66px}.labels{gap:4px;font-size:9px}.actions button{flex:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="sigil">黒傘 · KUROKASA</div>
+  <div class="umbrella">☂</div>
+  <h1>THE SEVEN SINS<span>PERSONALITY ASSESSMENT</span></h1>
+  <p class="intro">Every person has a side they show, a side they hide, and a side that guides their choices. Answer honestly. There are no right or wrong answers, and your result is about personality, not strength or rank.</p>
+  <div class="rule"></div>
+
+  <section id="welcome" class="center">
+    <p class="intro">This survey contains 30 statements. Choose how much each statement describes you, from <b>1 · Not me at all</b> to <b>5 · Very much me</b>. Your scores will be compared fairly across all seven Sins to show your strongest matches.</p>
+    <input id="memberName" class="namebox" maxlength="40" placeholder="Your name or Roblox username (optional)" aria-label="Name or Roblox username">
+    <button id="startBtn">BEGIN THE SURVEY</button>
+    <p class="small" style="margin-top:16px">Your answers are processed in this page. This demo does not send or save responses to a server.</p>
+  </section>
+
+  <section id="survey" class="hidden">
+    <div class="progressrow"><span id="progressText">QUESTIONS 1–5 OF 30</span><span id="answeredText">0 answered</span></div>
+    <div class="bar"><div id="barfill" class="barfill"></div></div>
+    <div id="questions"></div>
+    <div class="actions"><button class="secondary" id="backBtn">BACK</button><span class="small" id="hint">Answer every statement to see your result.</span><button id="resultBtn">SEE MY RESULTS</button></div>
+  </section>
+
+  <section id="results" class="hidden">
+    <div class="rule"></div>
+    <div class="center">
+      <div class="kicker">KUROKASA · PERSONALITY RESULT</div>
+      <p id="resultName" class="small"></p>
+      <div id="winner" class="winner"></div>
+      <div id="winnerSub" class="kicker"></div>
+    </div>
+    <div class="resultcard">
+      <div class="kicker">YOUR STRONGEST MATCH</div>
+      <p id="description" class="desc"></p>
+      <div class="rule"></div>
+      <div class="kicker">ALL SEVEN SCORES</div>
+      <div id="allScores"></div>
+      <div class="rule"></div>
+      <div class="kicker">YOUR TOP THREE</div>
+      <div id="topThree"></div>
+    </div>
+    <p class="small" style="margin-top:16px">This is a personality guide, not a clinical or scientific diagnosis. Use it as a starting point for reflection. If you already have an assigned Sin in Kurokasa, this result does not automatically change it.</p>
+    <div class="actions"><button class="secondary" id="retakeBtn">RETAKE SURVEY</button><button id="copyBtn">COPY MY RESULTS</button></div>
+    <p class="small" id="copyStatus" aria-live="polite"></p>
+  </section>
+  <footer>KUROKASA · THE UMBRELLA COVERS MANY SHADOWS</footer>
+</div>
+<script>
+const sins = {
+  Pride:{title:"Pride",jp:"傲慢 · Gōman",desc:"You care about self-respect, competence, and being someone others can rely on. You may dislike being underestimated and can find it difficult to admit when you need help. At your best, you hold yourself to a high standard and lead with conviction."},
+  Greed:{title:"Greed",jp:"強欲 · Gōyoku",desc:"You are driven to gain, improve, and make the most of opportunities. You think about what could be yours and may feel uneasy when you are falling behind or giving up something valuable. At your best, you are resourceful, ambitious, and determined."},
+  Lust:{title:"Lust",jp:"色欲 · Shikiyoku",desc:"You are drawn to desire, chemistry, charm, and the excitement of being wanted or deeply connected. Attention and attraction can strongly influence your choices, and you may enjoy the thrill of pursuit. At your best, you are expressive, passionate, and aware of what makes people feel drawn to one another."},
+  Envy:{title:"Envy",jp:"嫉妬 · Shitto",desc:"You notice differences between yourself and others, especially when someone has something you want. Comparison can motivate you, but it can also make another person's success feel personal. At your best, you recognize what you want and use that awareness to grow."},
+  Gluttony:{title:"Gluttony",jp:"暴食 · Bōshoku",desc:"You like to fully enjoy what feels good, whether that means experiences, comfort, entertainment, food, or excitement. When something brings satisfaction, you may want more before thinking about the limit. At your best, you bring enthusiasm and a strong appreciation for life's pleasures."},
+  Wrath:{title:"Wrath",jp:"憤怒 · Fundo",desc:"You react strongly when you feel disrespected, treated unfairly, or pushed past your limits. You may hold onto frustration and want to confront the problem instead of ignoring it. At your best, you are courageous, protective, and willing to stand up for what matters."},
+  Sloth:{title:"Sloth",jp:"怠惰 · Taida",desc:"You value comfort, peace, and conserving your energy. You may put off difficult tasks, avoid unnecessary conflict, or wait until something feels worth the effort. At your best, you stay calm, avoid pointless struggles, and know when rest is necessary."}
+};
+const questions = [
+ {t:"I feel frustrated when people overlook the effort or ability I bring.",s:"Pride"},
+ {t:"If I see someone getting an opportunity I wanted, I keep thinking about it.",s:"Envy"},
+ {t:"I can get so caught up in something enjoyable that I lose track of when to stop.",s:"Gluttony"},
+ {t:"I find it hard to let go when someone crosses a line with me.",s:"Wrath"},
+ {t:"I like knowing I have more options, resources, or influence than I strictly need.",s:"Greed"},
+ {t:"Being desired or having strong chemistry with someone can be exciting to me.",s:"Lust"},
+ {t:"If a task feels exhausting or pointless, I tend to delay it for as long as I can.",s:"Sloth"},
+ {t:"I want to prove to myself that I can do something others doubt I can do.",s:"Pride"},
+ {t:"I notice when someone receives more praise, attention, or affection than I do.",s:"Envy"},
+ {t:"When I find something I really like, I want to experience it again and again.",s:"Gluttony"},
+ {t:"When I am angry, I want the other person to understand exactly how much they hurt or angered me.",s:"Wrath"},
+ {t:"I often think about how I can get ahead or make the most of a situation.",s:"Greed"},
+ {t:"Flirting, romantic tension, or being someone's special interest can appeal to me.",s:"Lust"},
+ {t:"I would rather keep my peace than spend energy on something I don't care about.",s:"Sloth"},
+ {t:"Admitting that I was wrong can be difficult when my pride is involved.",s:"Pride"},
+ {t:"Another person's success can make me question whether I am doing enough.",s:"Envy"},
+ {t:"I sometimes choose immediate comfort or pleasure even when I know I should stop.",s:"Gluttony"},
+ {t:"I feel a strong urge to defend myself or someone I care about when things feel unfair.",s:"Wrath"},
+ {t:"I dislike missing out on something valuable when I think I could have gained from it.",s:"Greed"},
+ {t:"I enjoy the excitement of attraction and the feeling of being wanted.",s:"Lust"},
+ {t:"I believe I should be recognized when I have done something especially well.",s:"Pride"},
+ {t:"It is difficult for me to feel happy for someone when they have what I deeply want.",s:"Envy"},
+ {t:"I often want to keep enjoying something even after I have had enough.",s:"Gluttony"},
+ {t:"When someone disrespects me, I can feel the urge to respond immediately.",s:"Wrath"},
+ {t:"I look for ways to gain more money, status, possessions, or useful connections.",s:"Greed"},
+ {t:"I can be strongly motivated by attention, attraction, or romantic excitement.",s:"Lust"},
+ {t:"I sometimes avoid responsibilities because relaxing feels more appealing.",s:"Sloth"},
+ {t:"I dislike appearing incapable in front of other people.",s:"Pride"},
+ {t:"I compare my progress with other people and feel bothered when they seem ahead.",s:"Envy"},
+ {t:"I tend to overindulge in things that make me feel good in the moment.",s:"Gluttony"}
+];
+const scale = ["1","2","3","4","5"];
+const labels = ["Not me at all","Slightly me","Sometimes me","Mostly me","Very much me"];
+let answers = {};
+let currentPage = 0;
+const pageSize = 5;
+const $ = id => document.getElementById(id);
+function renderPage(){
+ const start=currentPage*pageSize, end=Math.min(start+pageSize,questions.length);
+ $("questions").innerHTML="";
+ for(let i=start;i<end;i++){
+  const q=questions[i], wrap=document.createElement("div"); wrap.className="question";
+  wrap.innerHTML=`<div class="qtop">Statement ${i+1}</div><div class="qtext">${q.t}</div><div class="options">${scale.map((v,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${v}" ${answers[i]===Number(v)?"checked":""}><span>${v}</span><span>${labels[j]}</span></label>`).join("")}</div>`;
+  $("questions").appendChild(wrap);
+ }
+ $("progressText").textContent=`QUESTIONS ${start+1}–${end} OF ${questions.length}`;
+ $("answeredText").textContent=`${Object.keys(answers).length} answered`;
+ $("barfill").style.width=`${Object.keys(answers).length/questions.length*100}%`;
+ $("backBtn").style.visibility=currentPage===0?"hidden":"visible";
+ $("resultBtn").textContent=currentPage===Math.ceil(questions.length/pageSize)-1?"SEE MY RESULTS":"NEXT";
+ $("hint").textContent=Object.keys(answers).length===questions.length?"All statements answered.":"Answer every statement to see your result.";
+ $("questions").querySelectorAll("input").forEach(input=>input.addEventListener("change",e=>{answers[Number(e.target.name.slice(1))]=Number(e.target.value);$("answeredText").textContent=`${Object.keys(answers).length} answered`;$("barfill").style.width=`${Object.keys(answers).length/questions.length*100}%`; $("hint").textContent=Object.keys(answers).length===questions.length?"All statements answered.":"Answer every statement to see your result.";}));
+}
+$("startBtn").onclick=()=>{ $("welcome").classList.add("hidden");$("survey").classList.remove("hidden");currentPage=0;renderPage();window.scrollTo({top:0,behavior:"smooth"});};
+$("backBtn").onclick=()=>{if(currentPage>0){currentPage--;renderPage();window.scrollTo({top:0,behavior:"smooth"});}};
+$("resultBtn").onclick=()=>{
+ if(currentPage<Math.ceil(questions.length/pageSize)-1){currentPage++;renderPage();window.scrollTo({top:0,behavior:"smooth"});return;}
+ if(Object.keys(answers).length!==questions.length){const firstMissing=questions.findIndex((_,i)=>!answers.hasOwnProperty(i));currentPage=Math.floor(firstMissing/pageSize);renderPage();$("hint").textContent="Please answer every statement before viewing results.";window.scrollTo({top:0,behavior:"smooth"});return;}
+ const scores={};Object.keys(sins).forEach(s=>scores[s]=0);
+ questions.forEach((q,i)=>scores[q.s]+=answers[i]);
+ const ranked=Object.entries(scores).map(([sin,points])=>({sin,points,max:questions.filter(q=>q.s===sin).length*5,pct:points/(questions.filter(q=>q.s===sin).length*5)})).sort((a,b)=>b.pct-a.pct);
+ const top=ranked[0].sin;
+ $("winner").textContent=sins[top].title;
+ $("winnerSub").textContent=sins[top].jp;
+ $("description").textContent=sins[top].desc;
+ $("resultName").textContent=$("memberName").value.trim()?`RESULT FOR ${$("memberName").value.trim().toUpperCase()}`:"YOUR PERSONALITY PROFILE";
+ $("allScores").innerHTML=ranked.map(({sin,points,max,pct})=>`<div class="score"><div class="scorehead"><span>${sins[sin].title}</span><span>${points} / ${max} · ${Math.round(pct*100)}%</span></div><div class="track"><div class="fill" style="width:${pct*100}%"></div></div></div>`).join("");
+ $("topThree").innerHTML=ranked.slice(0,3).map(({sin,points,pct},i)=>`<div class="rank"><strong>${i+1}. ${sins[sin].title}</strong> <span class="small">· ${sins[sin].jp} · ${Math.round(pct*100)}% match (${points} points)</span><p>${sins[sin].desc}</p></div>`).join("");
+ window.currentResults=`KUROKASA SEVEN SINS SURVEY\nName: ${$("memberName").value.trim()||"Not provided"}\nTop Sin: ${sins[ranked[0].sin].title} (${sins[ranked[0].sin].jp})\nSecond Sin: ${sins[ranked[1].sin].title} (${Math.round(ranked[1].pct*100)}% match)\nThird Sin: ${sins[ranked[2].sin].title} (${Math.round(ranked[2].pct*100)}% match)\nScores: ${ranked.map(({sin,points,max,pct})=>`${sin}: ${points}/${max} (${Math.round(pct*100)}%)`).join(", ")}`;
+ $("survey").classList.add("hidden");$("results").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});
+};
+$("retakeBtn").onclick=()=>{answers={};currentPage=0;$("results").classList.add("hidden");$("survey").classList.add("hidden");$("welcome").classList.remove("hidden");$("copyStatus").textContent="";window.scrollTo({top:0,behavior:"smooth"});};
+$("copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText(window.currentResults);$("copyStatus").textContent="Results copied. You can send them to a Pillar or the leader.";}catch(e){$("copyStatus").textContent="Copy is unavailable in this browser. You can select and copy your result manually."; }};
+</script>
+</body>
+</html>
